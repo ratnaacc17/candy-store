@@ -33,6 +33,7 @@ jobs:
           host: ${{ env.SERVER_PUBLIC_IP }}
           username: ubuntu
           key: ${{ env.PRIVATE  _SSH_KEY }}
+          
       - name: Pull and run Docker image on EC2
         run: | 
             sudo docker pull $REGISTRY/$REPOSITORY:$IMAGE_TAG

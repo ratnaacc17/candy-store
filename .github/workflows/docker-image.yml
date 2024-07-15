@@ -12,7 +12,7 @@ env:
   SERVER_PUBLIC_IP: ${{ secrets.AWS_EC2_IP }}
   PUBLIC_SSH_KEY: ${{ secrets.AWS_PUBLIC_KEY }}
 jobs:
-  deploy:
+  build-test-deploy:
     runs-on: self-hosted
     steps:
       - name: Checkout
@@ -34,9 +34,7 @@ jobs:
           host: ${{ env.SERVER_PUBLIC_IP }}
           username: ec2-user
           key: ${{ env.PEM_SSH_KEY }}
-          
-      - name: Pull and run Docker image on EC2
-        run: |
+          script: |
             sudo yum update
             sudo yum install docker.io -y
             sudo yum install awscli -y

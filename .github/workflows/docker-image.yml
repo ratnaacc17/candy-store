@@ -33,7 +33,7 @@ jobs:
         with:
           host: ${{ env.SERVER_PUBLIC_IP }}
           username: ec2-user
-          key: ${{ env.AWS_PEM_KEY }}
+          key: ${{ env.PEM_SSH_KEY }}
           
       - name: Pull and run Docker image on EC2
         run: | 

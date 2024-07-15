@@ -37,9 +37,10 @@ jobs:
           
       - name: Pull and run Docker image on EC2
         run: |-
-            sudo apt update
-            sudo apt install docker.io -y
-            sudo apt install awscli -y
+            sudo yum update
+            sudo yum install https://rpm.nodesource.com/pub_18.x/nodistro/repo/nodesource-release-nodistro-1.noarch.rpm -y
+            sudo yum install docker.io -y
+            sudo yum install awscli -y
             sudo $(aws ecr get-login --no-include-email --region ap-south-1);
             sudo docker stop myappcontainer || true
             sudo docker rm myappcontainer || true

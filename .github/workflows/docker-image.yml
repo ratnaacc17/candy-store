@@ -38,7 +38,11 @@ jobs:
       - name: Pull and run Docker image on EC2
         run: |-
             sudo apt update
-            sudo apt install docker.io -y
+            sudo apt-get remove containerd.io
+            sudo apt install docker.io
+            docke-compose -y
+            systemctl start docker
+            sudo gpasswd -a $USER docker
             sudo apt install awscli -y
             sudo $(aws ecr get-login --no-include-email --region ap-south-1);
             sudo docker stop myappcontainer || true

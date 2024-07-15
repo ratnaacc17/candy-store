@@ -11,6 +11,8 @@ env:
   PEM_SSH_KEY: ${{ secrets.AWS_PEM_KEY }}
   SERVER_PUBLIC_IP: ${{ secrets.AWS_EC2_IP }}
   PUBLIC_SSH_KEY: ${{ secrets.AWS_PUBLIC_KEY }}
+  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+  DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 jobs:
   build-test-deploy:
     runs-on: ubuntu-latest
@@ -38,7 +40,7 @@ jobs:
         run: |
             sudo apt update
             sudo apt install docker.io -y
-            sudo gpasswd -a $USER docker
+            sudo gpasswd -a ${{ secrets.DOCKER_USERNAME }} docker
             sudo apt install awscli -y
             sudo $(aws ecr get-login --no-include-email --region ap-south-1);
             sudo docker stop myappcontainer || true

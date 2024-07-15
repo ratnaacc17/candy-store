@@ -32,7 +32,7 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: ${{ env.SERVER_PUBLIC_IP }}
-          username: ubuntu
+          username: ec2-user
           key: ${{ env.PEM_SSH_KEY }}
           
       - name: Pull and run Docker image on EC2

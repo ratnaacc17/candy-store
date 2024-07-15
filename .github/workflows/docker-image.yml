@@ -36,15 +36,6 @@ jobs:
           key: ${{ env.PEM_SSH_KEY }}
           
       - name: Pull and run Docker image on EC2
-        run: |-
-            sudo apt update -y
-             sudo apt install docker.io 
-             docker-compose -y
-            systemctl start docker
-            sudo gpasswd -a $USER docker
-            sudo usermod -a -G docker ec2-user
-            sudo $(aws ecr get-login --no-include-email --region ap-south-1);
-            sudo docker stop myappcontainer || true
             sudo docker rm myappcontainer || true
             sudo docker pull $REGISTRY/$REPOSITORY:$IMAGE_TAG
             sudo docker run -d --name myappcontainer -p 80:80 $REGISTRY/$REPOSITORY:$IMAGE_TAG

@@ -36,6 +36,7 @@ jobs:
           key: ${{ env.PEM_SSH_KEY }}
           
       - name: Pull and run Docker image on EC2
+        run: |
             sudo apt update
             sudo apt install docker.io -y
             sudo apt install awscli -y

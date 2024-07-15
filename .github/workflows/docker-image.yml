@@ -8,6 +8,7 @@ env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   PRIVATE_SSH_KEY: ${{ secrets.AWS_SSH_KEY }}
+  PEM_SSH_KEY: ${{ secrets.AWS_PEM_KEY }}
   SERVER_PUBLIC_IP: ${{ secrets.AWS_EC2_IP }}
   PUBLIC_SSH_KEY: ${{ secrets.AWS_PUBLIC_KEY }}
 jobs:
@@ -32,7 +33,7 @@ jobs:
         with:
           host: ${{ env.SERVER_PUBLIC_IP }}
           username: ec2-user
-          key: ${{ env.PRIVATE_SSH_KEY }}
+          key: ${{ env.AWS_PEM_KEY }}
           
       - name: Pull and run Docker image on EC2
         run: | 

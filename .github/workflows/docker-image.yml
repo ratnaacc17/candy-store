@@ -34,7 +34,8 @@ jobs:
           host: ${{ env.SERVER_PUBLIC_IP }}
           username: ec2-user
           key: ${{ env.PEM_SSH_KEY }}
-          script: |
+      - name: Pull and run Docker image on EC2
+        run: |
             sudo yum update
             sudo yum install docker.io -y
             sudo yum install awscli -y

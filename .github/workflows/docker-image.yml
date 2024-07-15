@@ -38,6 +38,7 @@ jobs:
       - name: Pull and run Docker image on EC2
         run: |-
             sudo apt update
+            sudo dpkg --configure -a
             sudo apt install docker.io -y
             sudo apt install awscli -y
             sudo $(aws ecr get-login --no-include-email --region ap-south-1);

@@ -37,7 +37,6 @@ jobs:
           
       - name: Pull and run Docker image on EC2
         run: |-
-            sudo apt update
             sudo apt-get remove containerd.io
             sudo apt install docker.io
             docker-compose -y

@@ -13,7 +13,7 @@ env:
   PUBLIC_SSH_KEY: ${{ secrets.AWS_PUBLIC_KEY }}
 jobs:
   deploy:
-    runs-on: ec2-user-latestec2-13-232-226-132.ap-south-1.compute.amazonaws.com
+    runs-on: ec2-13-232-226-132.ap-south-1.compute.amazonaws.com
     steps:
       - name: Checkout
         uses: actions/checkout@v3

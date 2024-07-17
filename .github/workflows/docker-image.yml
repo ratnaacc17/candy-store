@@ -38,7 +38,6 @@ jobs:
         run: |
             sudo apt-get -y update
             sudo apt-get remove docker* -y
-            sudo apt docker install.io
             sudo curl -fsSL https://get.docker.com -o get-docker.sh
             sudo chmod 755 get-docker.sh
             sudo sh get-docker.sh

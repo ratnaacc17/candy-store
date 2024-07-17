@@ -36,7 +36,8 @@ jobs:
           key: ${{ env.PEM_SSH_KEY }}
           envs: PRIVATE_SSH_KEY,PUBLIC_SSH_KEY,PEM_SSH_KEY,REGISTRY,REPOSITORY,IMAGE_TAG,AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY,AWS_DEFAULT_REGION,AWS_REGION
           script: |
-            sudo apt-get -y update
+            sudo apt-get update -qq
+            sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq \apt-transport-https ca-certificates curl
             sudo apt-get remove docker* -y
             sudo curl -fsSL https://get.docker.com -o get-docker.sh
             sudo chmod 755 get-docker.sh

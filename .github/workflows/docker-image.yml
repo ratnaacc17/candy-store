@@ -44,6 +44,6 @@ jobs:
             sudo systemctl start docker
             sudo usermod -ag docker $USER
             sudo apt install awscli -y
-            $(aws ecr get-login --no-include-email --region ap-south-1);
+            sudo $(aws ecr get-login --no-include-email --region ap-south-1);
             sudo docker pull $REGISTRY/$REPOSITORY:$IMAGE_TAG
             sudo docker run -d $REGISTRY/$REPOSITORY:$IMAGE_TAG

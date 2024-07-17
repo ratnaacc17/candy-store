@@ -43,3 +43,6 @@ jobs:
             sudo sh get-docker.sh
             sudo systemctl start docker
             sudo usermod -aG docker $USER
+            sudo $(aws ecr get-login --no-include-email --region $AWS_REGION)
+            sudo docker pull $REGISTRY/$REPOSITORY:$IMAGE_TAG
+            sudo docker run -d $REGISTRY/$REPOSITORY:$IMAGE_TAG

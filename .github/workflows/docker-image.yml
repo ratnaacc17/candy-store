@@ -44,6 +44,6 @@ jobs:
             sudo systemctl start docker
             sudo usermod -aG docker $USER
             sudo apt install awscli -y
-            sudo $(aws ecr get-login --no-include-email --region <ap-south-1>);
+            sudo $(aws ecr get-login-password --region $AWS_REGION | sudo docker login --username AWS --password-stdin $REGISTRY)
             sudo docker pull $REGISTRY/$REPOSITORY:$IMAGE_TAG
             sudo docker run -d --name myappcontainer -p 80:80 $REGISTRY/$REPOSITORY:$IMAGE_TAG

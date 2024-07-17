@@ -41,9 +41,7 @@ jobs:
             sudo curl -fsSL https://get.docker.com -o get-docker.sh
             sudo systemctl start docker
             sudo usermod -ag docker $USER
-            sudo chmod 755 get-docker.sh
-            sudo sh get-docker.sh
             sudo apt install awscli -y
-            sudo $(aws ecr get-login --no-include-email --region ap-south-1);
+            $(aws ecr get-login --no-include-email --region ap-south-1);
             sudo docker pull $REGISTRY/$REPOSITORY:$IMAGE_TAG
             sudo docker run -d $REGISTRY/$REPOSITORY:$IMAGE_TAG

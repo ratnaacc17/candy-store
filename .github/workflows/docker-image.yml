@@ -45,7 +45,5 @@ jobs:
             sudo sh get-docker.sh
             sudo apt install awscli -y
             sudo $(aws ecr get-login --no-include-email --region ap-south-1);
-            sudo docker stop myappcontainer || true
-            sudo docker rm myappcontainer || true
             sudo docker pull $REGISTRY/$REPOSITORY:$IMAGE_TAG
             sudo docker run -d $REGISTRY/$REPOSITORY:$IMAGE_TAG

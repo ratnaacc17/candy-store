@@ -34,8 +34,7 @@ jobs:
           host: ${{ env.SERVER_PUBLIC_IP }}
           username: ubuntu
           key: ${{ env.PEM_SSH_KEY }}
-      - name: Pull and run Docker image on EC2
-        run: |
+          run: |
             sudo apt-get -y update
             sudo apt-get remove docker* -y
             sudo curl -fsSL https://get.docker.com -o get-docker.sh

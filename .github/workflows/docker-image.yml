@@ -34,7 +34,7 @@ jobs:
           host: ${{ env.SERVER_PUBLIC_IP }}
           username: ubuntu
           key: ${{ env.PEM_SSH_KEY }}
-          run: |
+          script: |
             sudo apt-get remove docker* -y && sudo apt-get -y update
             sudo apt  install docker.io
             sudo apt install awscli -y

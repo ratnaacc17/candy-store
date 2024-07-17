@@ -36,9 +36,7 @@ jobs:
           key: ${{ env.PEM_SSH_KEY }}
           run: |
             sudo apt-get remove docker* -y && sudo apt-get -y update
-            sudo curl -fsSL https://get.docker.com -o get-docker.sh
-            sudo chmod 755 get-docker.sh
-            sudo sh get-docker.sh
+            sudo apt  install docker.io
             sudo apt install awscli -y
             sudo $(aws ecr get-login --no-include-email --region ap-south-1);
             sudo docker pull $REGISTRY/$REPOSITORY:$IMAGE_TAG

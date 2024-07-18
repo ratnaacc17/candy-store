@@ -28,7 +28,7 @@ jobs:
           chmod 644 ~/.ssh/known_hosts
       - name: Login to AWS ECR
         id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
+        uses: aws-actions/amazon-ecr-login@v2
         with:
           registry: 654654264414.dkr.ecr.ap-south-1.amazonaws.com
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -42,6 +42,8 @@ jobs:
         run: |-
           docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+      - name: Deploy Docker Image
+        run: |-
           aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 654654264414.dkr.ecr.ap-south-1.amazonaws.com
           ssh -i ~/.ssh/test.pem ubuntu@43.205.243.201 'docker pull 654654264414.dkr.ecr.ap-south-1.amazonaws.com/ecr-web-image:"${{ github.sha }}" && docker stop ecr-web-image || true && docker rm ecr-web-image || true && docker run -d --name ecr-web-image -p 80:80 654654264414.dkr.ecr.ap-south-1.amazonaws.com/ecr-web-image:"${{ github.sha }}"'
       - name: Cleanup SSH key

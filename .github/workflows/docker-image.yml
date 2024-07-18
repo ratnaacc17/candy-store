@@ -17,6 +17,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Install SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.AWS_SSH_KEY }}" > ~/.ssh/id_rsa
+          echo "${{ secrets.AWS_PEM_KEY }}" > ~/.ssh/test.pem
+          chmod 400 ~/.ssh/test.pem
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H "${{ secrets.AWS_EC2_IP }}" >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
       - name: Login to AWS ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
@@ -33,15 +42,6 @@ jobs:
         run: |-
           docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
-      - name: Install SSH key
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.AWS_SSH_KEY }}" > ~/.ssh/id_rsa
-          echo "${{ secrets.AWS_PEM_KEY }}" > ~/.ssh/test.pem
-          chmod 400 ~/.ssh/test.pem
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H "${{ secrets.AWS_EC2_IP }}" >> ~/.ssh/known_hosts
-          chmod 644 ~/.ssh/known_hosts
       - name: Deploy Docker image
         run: |
           ssh -i ~/.ssh/test.pem ubuntu@43.205.243.201 'docker pull 654654264414.dkr.ecr.ap-south-1.amazonaws.com/ecr-web-image:"${{ github.sha }}" && docker stop ecr-web-image || true && docker rm ecr-web-image || true && docker run -d --name ecr-web-image -p 80:80 654654264414.dkr.ecr.ap-south-1.amazonaws.com/ecr-web-image:"${{ github.sha }}"'

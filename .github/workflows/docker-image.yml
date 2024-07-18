@@ -46,9 +46,9 @@ jobs:
         run: |-
           ssh -i ~/.ssh/test.pem ubuntu@43.205.243.201
           aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 654654264414.dkr.ecr.ap-south-1.amazonaws.com
-          docker pull 654654264414.dkr.ecr.ap-south-1.amazonaws.com/ecr-web-image
           docker stop ecr-web-image || true
           docker rm ecr-web-image || true
+          docker pull 654654264414.dkr.ecr.ap-south-1.amazonaws.com/ecr-web-image
           docker run -d --name ecr-web-image -p 80:80 654654264414.dkr.ecr.ap-south-1.amazonaws.com/ecr-web-image
       - name: Cleanup SSH key
         run: |

@@ -37,7 +37,7 @@ jobs:
           chmod 644 ~/.ssh/known_hosts
       - name: Deploy Docker image
         run: |
-          ssh username@your-ec2-instance-ip 'docker pull "${{secrets.AWS_ACCESS_KEY_ID}}".dkr.ecr.ap-south-1.amazonaws.com/ecr-web-image:"${{ github.sha }}" && docker stop ecr-web-image || true && docker rm ecr-web-image || true && docker run -d --name ecr-web-image -p 80:80 "${{secrets.AWS_ACCESS_KEY_ID}}".dkr.ecr.ap-south-1.amazonaws.com/ecr-web-image:"${{ github.sha }}"'
+          ssh ubuntu@"${{ secrets.AWS_EC2_IP }}" 'docker pull "${{secrets.AWS_ACCESS_KEY_ID}}".dkr.ecr.ap-south-1.amazonaws.com/ecr-web-image:"${{ github.sha }}" && docker stop ecr-web-image || true && docker rm ecr-web-image || true && docker run -d --name ecr-web-image -p 80:80 "${{secrets.AWS_ACCESS_KEY_ID}}".dkr.ecr.ap-south-1.amazonaws.com/ecr-web-image:"${{ github.sha }}"'
       - name: Cleanup SSH key
         run: |
           rm ~/.ssh/id_rsa

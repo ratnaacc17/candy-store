@@ -28,27 +28,16 @@ jobs:
         run: |-
           docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
-      - name: SSH into EC2 instance
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ env.SERVER_PUBLIC_IP }}
-          username: ubuntu
-          key: ${{ env.PEM_SSH_KEY }}
-          envs: PRIVATE_SSH_KEY,PUBLIC_SSH_KEY,PEM_SSH_KEY,REGISTRY,REPOSITORY,IMAGE_TAG,AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY,AWS_DEFAULT_REGION,AWS_REGION
-          script: |
-            sudo apt-get -y update
-            sudo apt-get remove docker* -y
-            sudo curl -fsSL https://get.docker.com -o get-docker.sh
-            sudo chmod 755 get-docker.sh
-            sudo sh get-docker.sh
-            sudo systemctl start docker
-            sudo usermod -aG docker $USER
-            sudo apt-get install -y unzip
-            sudo apt install python3.12-venv
-            sudo ln -s /usr/bin/python3 /usr/local/aws/bin/python
-            sudo curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
-            sudo unzip awscli-bundle.zip
-            sudo ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
-            sudo aws ecr get-login-password --region $AWS_REGION | sudo docker login --username AWS --password-stdin $REGISTRY
-            sudo docker pull $REGISTRY/$REPOSITORY:$IMAGE_TAG
-            sudo docker run -d --name myappcontainer -p 80:80 $REGISTRY/$REPOSITORY:$IMAGE_TAG
+      - name: Install SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.AWS_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H "${{ secrets.AWS_EC2_IP }}" >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+      - name: Deploy Docker image
+        run: |
+          ssh username@your-ec2-instance-ip 'docker pull "${{secrets.AWS_ACCESS_KEY_ID}}".dkr.ecr.ap-south-1.amazonaws.com/ecr-web-image:"${{ github.sha }}" && docker stop ecr-web-image || true && docker rm ecr-web-image || true && docker run -d --name ecr-web-image -p 80:80 "${{secrets.AWS_ACCESS_KEY_ID}}".dkr.ecr.ap-south-1.amazonaws.com/ecr-web-image:"${{ github.sha }}"'
+      - name: Cleanup SSH key
+        run: |
+          rm ~/.ssh/id_rsa

@@ -41,11 +41,11 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
         run: |-
           docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
-          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+          docker push $REGISTRY/$REPOSITORY
       - name: Deploy Docker Image
         run: |-
           aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 654654264414.dkr.ecr.ap-south-1.amazonaws.com
-          ssh -i ~/.ssh/test.pem ubuntu@43.205.243.201 'docker pull 654654264414.dkr.ecr.ap-south-1.amazonaws.com/ecr-web-image:"${{ github.sha }}" && docker stop ecr-web-image || true && docker rm ecr-web-image || true && docker run -d --name ecr-web-image -p 80:80 654654264414.dkr.ecr.ap-south-1.amazonaws.com/ecr-web-image:"${{ github.sha }}"'
+          ssh -i ~/.ssh/test.pem ubuntu@43.205.243.201 'docker pull 654654264414.dkr.ecr.ap-south-1.amazonaws.com/ecr-web-image:"${{ github.sha }}" && docker stop ecr-web-image || true && docker rm ecr-web-image || true && docker run -d --name ecr-web-image -p 80:80 654654264414.dkr.ecr.ap-south-1.amazonaws.com/ecr-web-image'
       - name: Cleanup SSH key
         run: |
           rm ~/.ssh/id_rsa

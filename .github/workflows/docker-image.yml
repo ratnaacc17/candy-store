@@ -40,8 +40,8 @@ jobs:
           REPOSITORY: ecr-web-image
           IMAGE_TAG: ${{ github.sha }}
         run: |-
-          docker buildx build --platform linux/amd64 -t $REGISTRY/$REPOSITORY .
-          docker push $REGISTRY/$REPOSITORY
+          docker buildx build --platform linux/amd64 -t ecr-web-image .
+          docker push ecr-web-image
       - name: Login to AWS ECR
         run: |
           aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 654654264414.dkr.ecr.ap-south-1.amazonaws.com
@@ -51,7 +51,7 @@ jobs:
           sudo docker rm ecr-web-image || true
       - name: Pull latest Docker image
         run: |
-          sudo docker pull $REGISTRY/$REPOSITORY:$IMAGE_TAG
+          docker pull 654654264414.dkr.ecr.ap-south-1.amazonaws.com/ecr-web-image
       - name: Run Docker container
         run: |
          sudo docker run --rm -d --name ecr-web-image -p 80:80 654654264414.dkr.ecr.ap-south-1.amazonaws.com/ecr-web-image

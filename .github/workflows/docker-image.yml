@@ -40,7 +40,7 @@ jobs:
           REPOSITORY: ecr-web-image
           IMAGE_TAG: ${{ github.sha }}
         run: |-
-          docker build -t $REGISTRY/$REPOSITORY .
+          docker buildx build --platform linux/amd64 -t $REGISTRY/$REPOSITORY .
           docker push $REGISTRY/$REPOSITORY
       - name: Login to AWS ECR
         run: |
@@ -54,7 +54,7 @@ jobs:
           docker pull 654654264414.dkr.ecr.ap-south-1.amazonaws.com/ecr-web-image
       - name: Run Docker container
         run: |
-          docker run --rm -d -p --name ecr-web-image -p 80:80 654654264414.dkr.ecr.ap-south-1.amazonaws.com/ecr-web-image
+          docker run --rm -d --name ecr-web-image -p 80:80 654654264414.dkr.ecr.ap-south-1.amazonaws.com/ecr-web-image
       - name: Cleanup SSH key
         run: |
           rm ~/.ssh/id_rsa

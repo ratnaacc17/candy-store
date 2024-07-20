@@ -20,10 +20,10 @@ jobs:
       - name: Install SSH key
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.AWS_SSH_KEY }}" > ~/.ssh/id_rsa
-          echo "${{ secrets.AWS_PEM_KEY }}" > ~/.ssh/test.pem
-          chmod 400 ~/.ssh/test.pem
-          chmod 600 ~/.ssh/id_rsa
+          echo "${{ secrets.AWS_SSH_KEY }}" > ~/.ssh/id_ed25519
+          echo "${{ secrets.AWS_PEM_KEY }}" > ~/.ssh/taxikey.pem
+          chmod 400 ~/.ssh/taxikey.pem
+          chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -H "${{ secrets.AWS_EC2_IP }}" >> ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
       - name: Login to AWS ECR

@@ -45,7 +45,7 @@ jobs:
       - name: Login to AWS ECR
         run: |
           sudo yum update -y
-          sudo apt install docker.io -y
+          sudo yum install docker.io -y
           aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 654654264414.dkr.ecr.ap-south-1.amazonaws.com
       - name: Stop and remove existing container
         run: |

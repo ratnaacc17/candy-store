@@ -22,7 +22,7 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.AWS_SSH_KEY }}" > ~/.ssh/id_rsa
           echo "${{ secrets.AWS_PEM_KEY }}" > ~/.ssh/candykey.pem
-          chmod 400 ~/.ssh/candy.pem
+          chmod 400 ~/.ssh/candykey.pem
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H "${{ secrets.AWS_EC2_IP }}" >> ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts

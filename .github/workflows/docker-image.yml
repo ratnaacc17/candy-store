@@ -45,13 +45,10 @@ jobs:
       - name: Login to AWS ECR
         run: |
             sudo apt-get -y update
-            sudo apt-get remove docker* -y
-            sudo systemctl disable --now docker.service docker.socket
-            sudo rm /var/run/docker.sock
-            sudo apt-get install -y docker-ce-rootless-extras
-            systemctl --user start docker
-            sudo chmod 755 get-docker.sh
-            sudo sh get-docker.sh
+            sudo apt-get install docker.io -y
+            sudo systemctl start docker
+            sudo docker run hello-world
+            sudo systemctl enable docker
             aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 654654264414.dkr.ecr.ap-south-1.amazonaws.com
       - name: Stop and remove existing container
         run: |

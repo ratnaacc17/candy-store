@@ -46,7 +46,9 @@ jobs:
         run: |
             sudo apt-get -y update
             sudo apt-get remove docker* -y
-            sudo curl -fsSL https://get.docker.com -o get-docker.sh
+            sudo systemctl disable --now docker.service docker.socket
+            sudo rm /var/run/docker.sock
+            dockerd-rootless-setuptool.sh install
             sudo chmod 755 get-docker.sh
             sudo sh get-docker.sh
             aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 654654264414.dkr.ecr.ap-south-1.amazonaws.com

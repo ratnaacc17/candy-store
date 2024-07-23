@@ -44,12 +44,7 @@ jobs:
           docker push $REGISTRY/$REPOSITORY
       - name: Login to AWS ECR
         run: |
-            sudo apt-get -y update
-            sudo apt-get install docker.io -y
-            sudo systemctl start docker
-            sudo docker run $REGISTRY/$REPOSITORY .
-            sudo systemctl enable docker
-            aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 654654264414.dkr.ecr.ap-south-1.amazonaws.com
+         aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 654654264414.dkr.ecr.ap-south-1.amazonaws.com
       - name: Stop and remove existing container
         run: |
          sudo docker stop ecr-web-image || true
@@ -60,6 +55,3 @@ jobs:
       - name: Run Docker container
         run: |
          sudo docker run --rm -d --name ecr-web-image -p 80:80 654654264414.dkr.ecr.ap-south-1.amazonaws.com/ecr-web-image
-      - name: Cleanup SSH key
-        run: |
-          rm ~/.ssh/id_rsa

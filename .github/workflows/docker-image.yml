@@ -44,9 +44,12 @@ jobs:
           docker push $REGISTRY/$REPOSITORY
       - name: Login to AWS ECR
         run: |
-          sudo yum update -y
-          sudo yum install docker.io -y
-          aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 654654264414.dkr.ecr.ap-south-1.amazonaws.com
+            sudo apt-get -y update
+            sudo apt-get remove docker* -y
+            sudo curl -fsSL https://get.docker.com -o get-docker.sh
+            sudo chmod 755 get-docker.sh
+            sudo sh get-docker.sh
+            aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 654654264414.dkr.ecr.ap-south-1.amazonaws.com
       - name: Stop and remove existing container
         run: |
          sudo docker stop ecr-web-image || true

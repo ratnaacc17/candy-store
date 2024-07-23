@@ -21,8 +21,8 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.AWS_SSH_KEY }}" > ~/.ssh/id_ed25519
-          echo "${{ secrets.AWS_PEM_KEY }}" > ~/.ssh/taxikey.pem
-          chmod 400 ~/.ssh/taxikey.pem
+          echo "${{ secrets.AWS_PEM_KEY }}" > ~/.ssh/candykey.pem
+          chmod 400 ~/.ssh/candy.pem
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -H "${{ secrets.AWS_EC2_IP }}" >> ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
@@ -44,6 +44,8 @@ jobs:
           docker push $REGISTRY/$REPOSITORY
       - name: Login to AWS ECR
         run: |
+          sudo yum update -y
+          sudo apt install docker.io -y
           aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 654654264414.dkr.ecr.ap-south-1.amazonaws.com
       - name: Stop and remove existing container
         run: |
